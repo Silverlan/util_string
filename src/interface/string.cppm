@@ -8,24 +8,10 @@ module;
 #include <optional>
 #include <algorithm>
 #include <vector>
+#include <cinttypes>
 #include <functional>
 #include <algorithm>
 
-#if defined(_UNICODE)
-#define _T(x) L##x
-#ifdef __linux__
-#define PTSTR wchar_t *
-#define PCTSTR const wchar_t *
-#endif
-#else
-#ifndef _T
-#define _T(x) x
-#endif
-#ifdef __linux__
-#define PTSTR char *
-#define PCTSTR const char *
-#endif
-#endif
 #ifdef _WIN32
 #include <Windows.h>
 #endif
@@ -35,6 +21,16 @@ export module pragma.string;
 export import :case_insensitive_hash;
 
 export {
+#ifdef __linux__
+#if defined(_UNICODE)
+	typedef wchar_t* PTSTR;
+	typedef const wchar_t* PCTSTR;
+#else
+	typedef char* PTSTR;
+	typedef const char* PCTSTR;
+#endif
+#endif
+
 	namespace ustring {
 		const std::string WHITESPACE = " \t\f\v\n\r";
 		const uint32_t NOT_FOUND = std::string::npos;
