@@ -3,10 +3,9 @@
 
 module;
 
-#include <unordered_map>
-#include <string>
-
 export module pragma.string:case_insensitive_hash;
+
+export import std.compat;
 
 export namespace ustring {
 	struct CaseInsensitiveStringComparator {

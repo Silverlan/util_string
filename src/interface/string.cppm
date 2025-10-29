@@ -3,15 +3,6 @@
 
 module;
 
-#include <string>
-#include <string_view>
-#include <optional>
-#include <algorithm>
-#include <vector>
-#include <cinttypes>
-#include <functional>
-#include <algorithm>
-
 #ifdef _WIN32
 #include <Windows.h>
 #endif
@@ -19,6 +10,7 @@ module;
 export module pragma.string;
 
 export import :case_insensitive_hash;
+export import std.compat;
 
 export {
 #ifdef __linux__

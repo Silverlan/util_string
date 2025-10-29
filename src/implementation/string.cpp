@@ -3,14 +3,6 @@
 
 module;
 
-#include <sstream>
-#include <cstring>
-#include <cctype>
-#include <codecvt>
-#include <locale>
-#include <cwctype>
-#include <vector>
-#include <functional>
 #ifdef _WIN32
 #include <winsock.h>
 #pragma comment(lib, "Ws2_32.lib") // Required for inet_addr / inet_ntoa
@@ -19,9 +11,10 @@ module;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #endif
-#include <algorithm>
 
 module pragma.string;
+
+import std.compat;
 
 #undef min
 #undef max
@@ -31,9 +24,6 @@ module pragma.string;
 #else
 #define _T(x) x
 #endif
-
-#define StringToLower(str) std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-#define StringToUpper(str) std::transform(str.begin(), str.end(), str.begin(), ::toupper);
 
 /*
 #ifdef __linux__
@@ -532,8 +522,12 @@ std::string ustring::fill_zeroes(const std::string &i, int numDigits)
 	return si.str();
 }
 
-void ustring::to_lower(std::string &str) { StringToLower(str); }
-void ustring::to_upper(std::string &str) { StringToUpper(str); }
+void ustring::to_lower(std::string &str) {
+	std::transform(str.begin(), str.end(), str.begin(), static_cast<int(*)(int)>(std::tolower));
+}
+void ustring::to_upper(std::string &str) {
+	std::transform(str.begin(), str.end(), str.begin(), static_cast<int(*)(int)>(std::toupper));
+}
 
 bool ustring::get_key_value(const std::string &str, std::string &rkey, std::string &rval, const char *sep)
 {
