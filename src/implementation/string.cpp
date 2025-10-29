@@ -400,7 +400,7 @@ uint32_t ustring::find_first_of(FILE *f, const std::string &tofind, std::string 
 		remove_comment(sbuf);
 		uint32_t brSt = sbuf.find_first_of(tofind);
 		if(brSt != NOT_FOUND) {
-			if(line != NULL)
+			if(line != nullptr)
 				*line = sbuf;
 			return brSt;
 		}
