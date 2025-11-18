@@ -3,12 +3,11 @@
 
 module;
 
-#include <unordered_map>
-#include <string>
-
 export module pragma.string:case_insensitive_hash;
 
-namespace ustring {
+export import std.compat;
+
+export namespace ustring {
 	struct CaseInsensitiveStringComparator {
 		bool operator()(const std::string &lhs, const std::string &rhs) const;
 	};

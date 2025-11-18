@@ -3,29 +3,6 @@
 
 module;
 
-#include <string>
-#include <string_view>
-#include <optional>
-#include <algorithm>
-#include <vector>
-#include <functional>
-#include <algorithm>
-
-#if defined(_UNICODE)
-#define _T(x) L##x
-#ifdef __linux__
-#define PTSTR wchar_t *
-#define PCTSTR const wchar_t *
-#endif
-#else
-#ifndef _T
-#define _T(x) x
-#endif
-#ifdef __linux__
-#define PTSTR char *
-#define PCTSTR const char *
-#endif
-#endif
 #ifdef _WIN32
 #include <Windows.h>
 #endif
@@ -33,11 +10,22 @@ module;
 export module pragma.string;
 
 export import :case_insensitive_hash;
+export import std.compat;
 
 export {
+#ifdef __linux__
+#if defined(_UNICODE)
+	typedef wchar_t *PTSTR;
+	typedef const wchar_t *PCTSTR;
+#else
+	typedef char *PTSTR;
+	typedef const char *PCTSTR;
+#endif
+#endif
+
 	namespace ustring {
 		const std::string WHITESPACE = " \t\f\v\n\r";
-		const uint32_t NOT_FOUND = std::string::npos;
+		const size_t NOT_FOUND = std::string::npos;
 
 		void remove_whitespace(std::string_view &s);
 		void remove_whitespace(std::string &s);
@@ -50,9 +38,9 @@ export {
 		void split(const std::string &str, std::vector<std::string> &substrings);
 		void explode(std::string str, const char *sep, std::vector<std::string> &substrings);
 		std::string implode(const std::vector<std::string> &strs, const std::string &separator = " ");
-		uint32_t get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args);
-		uint32_t find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev = 0);
-		uint32_t find_first_of(FILE *f, const std::string &tofind, std::string *line = nullptr);
+		size_t get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args);
+		size_t find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev = 0);
+		size_t find_first_of(FILE *f, const std::string &tofind, std::string *line = nullptr);
 		std::string float_to_string(float f);
 		std::string int_to_string(int32_t i);
 		bool is_integer(const std::string &str);
@@ -103,7 +91,7 @@ export {
 		std::string_view substr(const std::string_view &str, std::size_t start, size_t len = std::string::npos);
 		size_t find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive = true);
 		template<typename T>
-			requires(std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>)
+		    requires(std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>)
 		bool compare(const T &a, const T &b, bool caseSensitive = true);
 		bool compare(const char *a, const char *b, bool caseSensitive = true, size_t len = std::string::npos);
 		std::string name_to_identifier(const std::string &name);
@@ -151,10 +139,10 @@ export {
 			return N - 1;
 		}
 
-	#ifdef __clang__
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wdeprecated-literal-operator"
-	#endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-literal-operator"
+#endif
 		namespace string_switch {
 			// See https://stackoverflow.com/a/46711735/2482983
 			constexpr uint32_t hash(const char *data, size_t const size) noexcept
@@ -188,9 +176,9 @@ export {
 
 			constexpr inline long long int operator"" _(char const *p, size_t) { return ustring::string_switch_ci::hash(p, std::char_traits<char>::length(p)); }
 		}
-	#ifdef __clang__
-	#pragma clang diagnostic pop
-	#endif
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 	}
 
 	size_t ustring::find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive)

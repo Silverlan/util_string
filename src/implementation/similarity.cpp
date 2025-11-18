@@ -6,6 +6,11 @@ module;
 #include <cctype>
 #include <algorithm>
 #include <stdexcept>
+#include <limits>
+#include <vector>
+#include <cinttypes>
+#include <functional>
+#include <optional>
 
 module pragma.string;
 

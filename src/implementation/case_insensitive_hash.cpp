@@ -5,6 +5,7 @@ module;
 
 #include <unordered_map>
 #include <cctype>
+#include <string>
 #ifdef __linux__
 #include <strings.h>
 #endif
