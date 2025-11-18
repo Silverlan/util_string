@@ -15,11 +15,11 @@ export import std.compat;
 export {
 #ifdef __linux__
 #if defined(_UNICODE)
-	typedef wchar_t* PTSTR;
-	typedef const wchar_t* PCTSTR;
+	typedef wchar_t *PTSTR;
+	typedef const wchar_t *PCTSTR;
 #else
-	typedef char* PTSTR;
-	typedef const char* PCTSTR;
+	typedef char *PTSTR;
+	typedef const char *PCTSTR;
 #endif
 #endif
 
@@ -91,7 +91,7 @@ export {
 		std::string_view substr(const std::string_view &str, std::size_t start, size_t len = std::string::npos);
 		size_t find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive = true);
 		template<typename T>
-			requires(std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>)
+		    requires(std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>)
 		bool compare(const T &a, const T &b, bool caseSensitive = true);
 		bool compare(const char *a, const char *b, bool caseSensitive = true, size_t len = std::string::npos);
 		std::string name_to_identifier(const std::string &name);
@@ -139,10 +139,10 @@ export {
 			return N - 1;
 		}
 
-	#ifdef __clang__
-	#pragma clang diagnostic push
-	#pragma clang diagnostic ignored "-Wdeprecated-literal-operator"
-	#endif
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-literal-operator"
+#endif
 		namespace string_switch {
 			// See https://stackoverflow.com/a/46711735/2482983
 			constexpr uint32_t hash(const char *data, size_t const size) noexcept
@@ -176,9 +176,9 @@ export {
 
 			constexpr inline long long int operator"" _(char const *p, size_t) { return ustring::string_switch_ci::hash(p, std::char_traits<char>::length(p)); }
 		}
-	#ifdef __clang__
-	#pragma clang diagnostic pop
-	#endif
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 	}
 
 	size_t ustring::find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive)

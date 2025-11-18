@@ -522,12 +522,8 @@ std::string ustring::fill_zeroes(const std::string &i, int numDigits)
 	return si.str();
 }
 
-void ustring::to_lower(std::string &str) {
-	std::transform(str.begin(), str.end(), str.begin(), static_cast<int(*)(int)>(std::tolower));
-}
-void ustring::to_upper(std::string &str) {
-	std::transform(str.begin(), str.end(), str.begin(), static_cast<int(*)(int)>(std::toupper));
-}
+void ustring::to_lower(std::string &str) { std::transform(str.begin(), str.end(), str.begin(), static_cast<int (*)(int)>(std::tolower)); }
+void ustring::to_upper(std::string &str) { std::transform(str.begin(), str.end(), str.begin(), static_cast<int (*)(int)>(std::toupper)); }
 
 bool ustring::get_key_value(const std::string &str, std::string &rkey, std::string &rval, const char *sep)
 {
