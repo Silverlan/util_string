@@ -25,7 +25,7 @@ export {
 
 	namespace ustring {
 		const std::string WHITESPACE = " \t\f\v\n\r";
-		const uint32_t NOT_FOUND = std::string::npos;
+		const size_t NOT_FOUND = std::string::npos;
 
 		void remove_whitespace(std::string_view &s);
 		void remove_whitespace(std::string &s);
@@ -38,9 +38,9 @@ export {
 		void split(const std::string &str, std::vector<std::string> &substrings);
 		void explode(std::string str, const char *sep, std::vector<std::string> &substrings);
 		std::string implode(const std::vector<std::string> &strs, const std::string &separator = " ");
-		uint32_t get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args);
-		uint32_t find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev = 0);
-		uint32_t find_first_of(FILE *f, const std::string &tofind, std::string *line = nullptr);
+		size_t get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args);
+		size_t find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev = 0);
+		size_t find_first_of(FILE *f, const std::string &tofind, std::string *line = nullptr);
 		std::string float_to_string(float f);
 		std::string int_to_string(int32_t i);
 		bool is_integer(const std::string &str);

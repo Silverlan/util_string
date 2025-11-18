@@ -156,7 +156,7 @@ void ustring::remove_quotes(std::vector<std::string> &ss)
 
 void ustring::remove_comment(std::string &s)
 {
-	uint32_t cSt = s.find("//");
+	auto cSt = s.find("//");
 	if(cSt == NOT_FOUND)
 		return;
 	s = s.substr(0, cSt - 1);
@@ -186,7 +186,7 @@ std::string ustring::implode(const std::vector<std::string> &strs, const std::st
 
 void ustring::explode(std::string str, const char *sep, std::vector<std::string> &substrings)
 {
-	uint32_t st = find_first_of_outside_quotes(str, sep);
+	auto st = find_first_of_outside_quotes(str, sep);
 	auto foundAtLeastOne = (st != NOT_FOUND);
 	while(st != NOT_FOUND) {
 		std::string sub = str.substr(0, st);
@@ -353,15 +353,15 @@ bool ustring::compare(const char *a, const char *b, bool caseSensitive, size_t l
 	return true;
 }
 
-uint32_t ustring::get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args)
+size_t ustring::get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args)
 {
-	uint32_t arSt = s.find('(');
-	uint32_t arEn = s.find(')');
+	auto arSt = s.find('(');
+	auto arEn = s.find(')');
 	if(arSt == NOT_FOUND || arEn == NOT_FOUND)
 		return arEn;
 	std::string name = s.substr(0, arSt);
 	rname = name;
-	uint32_t arNext = 0;
+	size_t arNext = 0;
 	int it = 0;
 	do {
 		arNext = s.find_first_of(",)", arNext + 1);
@@ -376,15 +376,15 @@ uint32_t ustring::get_parameters(const std::string &s, std::string &rname, std::
 	return arEn;
 }
 
-uint32_t ustring::find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev)
+size_t ustring::find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev)
 {
-	uint32_t qStart = 0;
-	uint32_t qEnd;
+	size_t qStart = 0;
+	size_t qEnd;
 	qPrev--;
 	for(;;) {
 		qStart = str.find_first_of('\"', qPrev + 1);
 		qEnd = str.find_first_of('\"', qStart + 1);
-		uint32_t f = str.find_first_of(tofind, qPrev + 1);
+		auto f = str.find_first_of(tofind, qPrev + 1);
 		if(qStart == NOT_FOUND || qEnd == NOT_FOUND || f < qStart)
 			return f;
 		qPrev = qEnd;
@@ -392,13 +392,13 @@ uint32_t ustring::find_first_of_outside_quotes(const std::string &str, std::stri
 	//return NOT_FOUND;
 }
 
-uint32_t ustring::find_first_of(FILE *f, const std::string &tofind, std::string *line)
+size_t ustring::find_first_of(FILE *f, const std::string &tofind, std::string *line)
 {
 	char buf[4096];
 	while(fgets(buf, 4096, f)) {
 		std::string sbuf(buf);
 		remove_comment(sbuf);
-		uint32_t brSt = sbuf.find_first_of(tofind);
+		auto brSt = sbuf.find_first_of(tofind);
 		if(brSt != NOT_FOUND) {
 			if(line != nullptr)
 				*line = sbuf;
@@ -478,11 +478,11 @@ std::vector<std::string> ustring::get_command_args(const std::string &line, std:
 void ustring::get_sequence_commands(const std::string &line, const std::function<void(std::string, std::vector<std::string> &)> &f)
 {
 	std::string substr(line);
-	uint32_t st = substr.find_first_not_of(WHITESPACE);
+	auto st = substr.find_first_not_of(WHITESPACE);
 	if(st == NOT_FOUND)
 		return;
 	substr = substr.substr(st, substr.length());
-	uint32_t s = find_first_of_outside_quotes(substr, ";");
+	auto s = find_first_of_outside_quotes(substr, ";");
 	std::string next;
 	bool bNext = false;
 	if(s != NOT_FOUND) {
