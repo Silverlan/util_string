@@ -80,6 +80,12 @@ export {
 		int32_t to_int(const std::string &str);
 		float to_float(const std::string &str);
 		double to_double(const std::string &str);
+		template<typename T>
+			T cstring_to_number(const char *str) {
+			T value {};
+			auto [ptr, ec] = std::from_chars(str, str +strlen(str), value);
+			return value;
+		}
 		void explode_whitespace(const std::string &str, std::vector<std::string> &substrings);
 		uint32_t calc_levenshtein_distance(const std::string_view &s1, const std::string_view &s2);
 		double calc_levenshtein_similarity(const std::string_view &s1, const std::string_view &s2);

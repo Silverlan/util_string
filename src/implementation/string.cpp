@@ -567,9 +567,21 @@ std::string ustring::get_upper(const std::string &str)
 	to_upper(out);
 	return out;
 }
-int32_t ustring::to_int(const std::string &str) { return atoi(str.c_str()); }
-float ustring::to_float(const std::string &str) { return static_cast<float>(to_double(str)); }
-double ustring::to_double(const std::string &str) { return atof(str.c_str()); }
+int32_t ustring::to_int(const std::string &str) {
+	int32_t value = 0;
+	auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
+	return value;
+}
+float ustring::to_float(const std::string &str) {
+	float value = 0.f;
+	auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
+	return value;
+}
+double ustring::to_double(const std::string &str) {
+	double value = 0.0;
+	auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
+	return value;
+}
 std::string ustring::name_to_identifier(const std::string &name)
 {
 	auto r = name;
