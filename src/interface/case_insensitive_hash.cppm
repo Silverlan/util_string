@@ -7,7 +7,7 @@ export module pragma.string:case_insensitive_hash;
 
 export import std.compat;
 
-export namespace ustring {
+export namespace pragma::string {
 	struct CaseInsensitiveStringComparator {
 		bool operator()(const std::string &lhs, const std::string &rhs) const;
 	};

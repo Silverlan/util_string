@@ -23,7 +23,7 @@ export {
 #endif
 #endif
 
-	namespace ustring {
+	namespace pragma::string {
 		const std::string WHITESPACE = " \t\f\v\n\r";
 		const size_t NOT_FOUND = std::string::npos;
 
@@ -163,7 +163,7 @@ export {
 
 			constexpr uint32_t hash(const std::string_view &str) noexcept { return hash(str.data(), str.length()); }
 
-			constexpr inline long long int operator"" _(char const *p, size_t) { return ustring::string_switch::hash(p, std::char_traits<char>::length(p)); }
+			constexpr inline long long int operator"" _(char const *p, size_t) { return string_switch::hash(p, std::char_traits<char>::length(p)); }
 		}
 
 		namespace string_switch_ci {
@@ -180,14 +180,14 @@ export {
 
 			constexpr uint32_t hash(const std::string_view &str) noexcept { return hash(str.data(), str.length()); }
 
-			constexpr inline long long int operator"" _(char const *p, size_t) { return ustring::string_switch_ci::hash(p, std::char_traits<char>::length(p)); }
+			constexpr inline long long int operator"" _(char const *p, size_t) { return string_switch_ci::hash(p, std::char_traits<char>::length(p)); }
 		}
 #ifdef __clang__
 #pragma clang diagnostic pop
 #endif
 	}
 
-	size_t ustring::find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive)
+	size_t pragma::string::find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive)
 	{
 		if(caseSensitive)
 			return strHaystack.find(strNeedle);
@@ -196,7 +196,7 @@ export {
 	}
 
 	template<class type, class rtype>
-	size_t ustring::string_to_array(const std::string &str, type *a, rtype (*atot)(const char *), uint32_t count)
+	size_t pragma::string::string_to_array(const std::string &str, type *a, rtype (*atot)(const char *), uint32_t count)
 	{
 		std::vector<std::string> vdat;
 		explode(str, WHITESPACE.c_str(), vdat);
@@ -209,7 +209,7 @@ export {
 	}
 
 	template<class type>
-	size_t ustring::string_to_array(const std::string &str, type *a, type (*atot)(const char *), uint32_t count)
+	size_t pragma::string::string_to_array(const std::string &str, type *a, type (*atot)(const char *), uint32_t count)
 	{
 		return string_to_array<type, type>(str, a, atot, count);
 	}

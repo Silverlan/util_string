@@ -64,7 +64,7 @@ static double levenshtein(std::vector<std::vector<std::vector<double>>> &memo, c
 	return memo.at(i).at(j).at(count) = ans;
 }
 
-double ustring::calc_similarity(const std::string_view &inputWord, const std::string_view &checkWord)
+double pragma::string::calc_similarity(const std::string_view &inputWord, const std::string_view &checkWord)
 {
 	static std::vector<std::vector<std::vector<double>>> memo;
 	static auto initMemory = true;
@@ -93,7 +93,7 @@ double ustring::calc_similarity(const std::string_view &inputWord, const std::st
 	return r;
 }
 
-void ustring::gather_similar_elements(const std::string_view &baseElement, const std::vector<std::string> &elements, std::vector<size_t> &outElements, uint32_t limit, std::vector<float> *inOutSimilarities)
+void pragma::string::gather_similar_elements(const std::string_view &baseElement, const std::vector<std::string> &elements, std::vector<size_t> &outElements, uint32_t limit, std::vector<float> *inOutSimilarities)
 {
 	if(limit > elements.size())
 		limit = elements.size();
@@ -104,7 +104,7 @@ void ustring::gather_similar_elements(const std::string_view &baseElement, const
 	inOutSimilarities->reserve(limit + 1);
 	for(auto it = elements.begin(); it != elements.end(); ++it) {
 		auto &curEl = *it;
-		auto sim = ustring::calc_similarity(baseElement, curEl);
+		auto sim = string::calc_similarity(baseElement, curEl);
 		auto insertAsFirst = true;
 		auto itSim = std::upper_bound(inOutSimilarities->begin(), inOutSimilarities->end(), sim);
 		if(itSim != inOutSimilarities->end() || inOutSimilarities->size() < limit) {
@@ -120,7 +120,7 @@ void ustring::gather_similar_elements(const std::string_view &baseElement, const
 	}
 }
 
-void ustring::gather_similar_elements(const std::string_view &baseElement, const std::function<std::optional<std::string_view>(void)> &f, std::vector<std::string_view> &outElements, uint32_t limit, std::vector<float> *inOutSimilarities)
+void pragma::string::gather_similar_elements(const std::string_view &baseElement, const std::function<std::optional<std::string_view>(void)> &f, std::vector<std::string_view> &outElements, uint32_t limit, std::vector<float> *inOutSimilarities)
 {
 	std::vector<float> locSimilarities;
 	if(inOutSimilarities == nullptr)
@@ -132,7 +132,7 @@ void ustring::gather_similar_elements(const std::string_view &baseElement, const
 	auto curEl = f();
 	while(curEl.has_value()) {
 		auto bInserted = false;
-		auto percentage = ustring::calc_similarity(baseElement, *curEl);
+		auto percentage = string::calc_similarity(baseElement, *curEl);
 		for(auto it = outElements.begin(); it != outElements.end(); ++it) {
 			auto idx = it - outElements.begin();
 			auto &sc = *it;

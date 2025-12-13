@@ -40,7 +40,7 @@ import std.compat;
     }
 #endif
 */
-bool ustring::match(PCTSTR pszText, PCTSTR pszMatch, bool bMatchCase)
+bool pragma::string::match(PCTSTR pszText, PCTSTR pszMatch, bool bMatchCase)
 {
 	// Loop over the string
 	while(*pszText && *pszMatch != _T('*')) {
@@ -72,7 +72,7 @@ bool ustring::match(PCTSTR pszText, PCTSTR pszMatch, bool bMatchCase)
 			return match(pszText + 1, pszMatch, bMatchCase);
 	}
 }
-bool ustring::match(const std::string_view &text, const std::string_view &strMatch, bool bMatchCase)
+bool pragma::string::match(const std::string_view &text, const std::string_view &strMatch, bool bMatchCase)
 {
 	// Loop over the string
 	auto *pszText = text.data();
@@ -108,7 +108,7 @@ bool ustring::match(const std::string_view &text, const std::string_view &strMat
 			return match(text.substr((pszText + 1) - text.data()), strMatch.substr(pszMatch - strMatch.data()), bMatchCase);
 	}
 }
-void ustring::remove_whitespace(std::string_view &s)
+void pragma::string::remove_whitespace(std::string_view &s)
 {
 	if(s.empty())
 		return;
@@ -120,7 +120,7 @@ void ustring::remove_whitespace(std::string_view &s)
 	}
 	s = s.substr(begin, (end - begin) + 1);
 }
-void ustring::remove_whitespace(std::string &s)
+void pragma::string::remove_whitespace(std::string &s)
 {
 	if(s.empty())
 		return;
@@ -135,26 +135,26 @@ void ustring::remove_whitespace(std::string &s)
 	s = s.substr(begin, (end - begin) + 1);
 }
 
-void ustring::remove_whitespace(std::vector<std::string> &ss)
+void pragma::string::remove_whitespace(std::vector<std::string> &ss)
 {
 	for(int i = 0; i < ss.size(); i++)
 		remove_whitespace(ss[i]);
 }
 
-void ustring::remove_quotes(std::string &s)
+void pragma::string::remove_quotes(std::string &s)
 {
 	if(s.empty() || s.front() != '\"' || s.back() != '\"')
 		return;
 	s = s.substr(1, s.length() - 2);
 }
 
-void ustring::remove_quotes(std::vector<std::string> &ss)
+void pragma::string::remove_quotes(std::vector<std::string> &ss)
 {
 	for(int i = 0; i < ss.size(); i++)
 		remove_quotes(ss[i]);
 }
 
-void ustring::remove_comment(std::string &s)
+void pragma::string::remove_comment(std::string &s)
 {
 	auto cSt = s.find("//");
 	if(cSt == NOT_FOUND)
@@ -162,7 +162,7 @@ void ustring::remove_comment(std::string &s)
 	s = s.substr(0, cSt - 1);
 }
 
-void ustring::split(const std::string &str, std::vector<std::string> &substrings)
+void pragma::string::split(const std::string &str, std::vector<std::string> &substrings)
 {
 	std::string buf;
 	std::stringstream ss(str);
@@ -170,7 +170,7 @@ void ustring::split(const std::string &str, std::vector<std::string> &substrings
 		substrings.push_back(buf);
 }
 
-std::string ustring::implode(const std::vector<std::string> &strs, const std::string &separator)
+std::string pragma::string::implode(const std::vector<std::string> &strs, const std::string &separator)
 {
 	std::string result {};
 	auto first = true;
@@ -184,7 +184,7 @@ std::string ustring::implode(const std::vector<std::string> &strs, const std::st
 	return result;
 }
 
-void ustring::explode(std::string str, const char *sep, std::vector<std::string> &substrings)
+void pragma::string::explode(std::string str, const char *sep, std::vector<std::string> &substrings)
 {
 	auto st = find_first_of_outside_quotes(str, sep);
 	auto foundAtLeastOne = (st != NOT_FOUND);
@@ -201,7 +201,7 @@ void ustring::explode(std::string str, const char *sep, std::vector<std::string>
 	substrings.push_back(str);
 }
 
-void ustring::explode_whitespace(const std::string &str, std::vector<std::string> &substrings)
+void pragma::string::explode_whitespace(const std::string &str, std::vector<std::string> &substrings)
 {
 	auto estr = str;
 	auto st = estr.find_first_not_of(WHITESPACE);
@@ -224,7 +224,7 @@ void ustring::explode_whitespace(const std::string &str, std::vector<std::string
 }
 
 // See https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
-uint32_t ustring::calc_levenshtein_distance(const std::string_view &s1, const std::string_view &s2)
+uint32_t pragma::string::calc_levenshtein_distance(const std::string_view &s1, const std::string_view &s2)
 {
 	const auto len1 = s1.size();
 	const auto len2 = s2.size();
@@ -244,7 +244,7 @@ uint32_t ustring::calc_levenshtein_distance(const std::string_view &s1, const st
 }
 
 // See http://stackoverflow.com/a/16018452/2482983
-double ustring::calc_levenshtein_similarity(const std::string_view &s1, const std::string_view &s2)
+double pragma::string::calc_levenshtein_similarity(const std::string_view &s1, const std::string_view &s2)
 {
 	auto *longer = &s1;
 	auto *shorter = &s2;
@@ -260,7 +260,7 @@ double ustring::calc_levenshtein_similarity(const std::string_view &s1, const st
 }
 
 // See https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring#C.2B.2B_2
-std::size_t ustring::longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1, std::size_t &startIdx2)
+std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1, std::size_t &startIdx2)
 {
 	if(str1.empty() == true || str2.empty() == true)
 		return 0;
@@ -296,12 +296,12 @@ std::size_t ustring::longest_common_substring(const std::string &str1, const std
 	return maxSubstr;
 }
 
-std::size_t ustring::longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1)
+std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1)
 {
 	std::size_t startIdx2 = 0;
 	return longest_common_substring(str1, str2, startIdx1, startIdx2);
 }
-std::size_t ustring::longest_common_substring(const std::string &str1, const std::string &str2, std::string &subStr)
+std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2, std::string &subStr)
 {
 	std::size_t startIdx1 = 0;
 	auto len = longest_common_substring(str1, str2, startIdx1);
@@ -312,16 +312,16 @@ std::size_t ustring::longest_common_substring(const std::string &str1, const std
 	subStr = str1.substr(startIdx1, len);
 	return len;
 }
-std::size_t ustring::longest_common_substring(const std::string &str1, const std::string &str2)
+std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2)
 {
 	std::size_t startIdx = 0;
 	return longest_common_substring(str1, str2, startIdx);
 }
-std::string ustring::substr(const std::string &str, std::size_t start, size_t len) { return (start < str.length()) ? str.substr(start, len) : ""; }
-std::string_view ustring::substr(const std::string_view &str, std::size_t start, size_t len) { return (start < str.length()) ? str.substr(start, len) : std::string_view {}; }
+std::string pragma::string::substr(const std::string &str, std::size_t start, size_t len) { return (start < str.length()) ? str.substr(start, len) : ""; }
+std::string_view pragma::string::substr(const std::string_view &str, std::size_t start, size_t len) { return (start < str.length()) ? str.substr(start, len) : std::string_view {}; }
 template<typename T>
     requires(std::is_same_v<T, std::string> || std::is_same_v<T, std::string_view>)
-bool ustring::compare(const T &a, const T &b, bool caseSensitive)
+bool pragma::string::compare(const T &a, const T &b, bool caseSensitive)
 {
 	if(caseSensitive == true)
 		return a == b;
@@ -329,9 +329,9 @@ bool ustring::compare(const T &a, const T &b, bool caseSensitive)
 		return false;
 	return std::equal(b.begin(), b.end(), a.begin(), [](unsigned char a, unsigned char b) { return std::tolower(a) == std::tolower(b); });
 }
-template bool ustring::compare<std::string>(const std::string &a, const std::string &b, bool caseSensitive);
-template bool ustring::compare<std::string_view>(const std::string_view &a, const std::string_view &b, bool caseSensitive);
-bool ustring::compare(const char *a, const char *b, bool caseSensitive, size_t len)
+template bool pragma::string::compare<std::string>(const std::string &a, const std::string &b, bool caseSensitive);
+template bool pragma::string::compare<std::string_view>(const std::string_view &a, const std::string_view &b, bool caseSensitive);
+bool pragma::string::compare(const char *a, const char *b, bool caseSensitive, size_t len)
 {
 	if(caseSensitive == true) {
 		if(len == std::string::npos)
@@ -353,7 +353,7 @@ bool ustring::compare(const char *a, const char *b, bool caseSensitive, size_t l
 	return true;
 }
 
-size_t ustring::get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args)
+size_t pragma::string::get_parameters(const std::string &s, std::string &rname, std::vector<std::string> &args)
 {
 	auto arSt = s.find('(');
 	auto arEn = s.find(')');
@@ -376,7 +376,7 @@ size_t ustring::get_parameters(const std::string &s, std::string &rname, std::ve
 	return arEn;
 }
 
-size_t ustring::find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev)
+size_t pragma::string::find_first_of_outside_quotes(const std::string &str, std::string tofind, uint32_t qPrev)
 {
 	size_t qStart = 0;
 	size_t qEnd;
@@ -392,7 +392,7 @@ size_t ustring::find_first_of_outside_quotes(const std::string &str, std::string
 	//return NOT_FOUND;
 }
 
-size_t ustring::find_first_of(FILE *f, const std::string &tofind, std::string *line)
+size_t pragma::string::find_first_of(FILE *f, const std::string &tofind, std::string *line)
 {
 	char buf[4096];
 	while(fgets(buf, 4096, f)) {
@@ -408,23 +408,23 @@ size_t ustring::find_first_of(FILE *f, const std::string &tofind, std::string *l
 	return NOT_FOUND;
 }
 
-std::string ustring::float_to_string(float f) { return std::to_string(f); }
-std::string ustring::int_to_string(int i) { return std::to_string(i); }
+std::string pragma::string::float_to_string(float f) { return std::to_string(f); }
+std::string pragma::string::int_to_string(int i) { return std::to_string(i); }
 
-bool ustring::is_integer(const std::string &str)
+bool pragma::string::is_integer(const std::string &str)
 {
 	char *p;
 	long converted = strtol(str.c_str(), &p, 10);
 	return !*p;
 }
-bool ustring::is_number(const std::string &str)
+bool pragma::string::is_number(const std::string &str)
 {
 	char *p;
 	long converted = strtod(str.c_str(), &p);
 	return !*p;
 }
 
-uint32_t ustring::get_args(const std::string &line, std::vector<std::string> &argv)
+uint32_t pragma::string::get_args(const std::string &line, std::vector<std::string> &argv)
 {
 	uint32_t i = 0;
 	while(i != uint32_t(-1)) {
@@ -449,14 +449,14 @@ uint32_t ustring::get_args(const std::string &line, std::vector<std::string> &ar
 	}
 	return argv.size();
 }
-std::vector<std::string> ustring::get_args(const std::string &line)
+std::vector<std::string> pragma::string::get_args(const std::string &line)
 {
 	std::vector<std::string> argv;
 	get_args(line, argv);
 	return argv;
 }
 
-uint32_t ustring::get_command_args(const std::string &line, std::string &cmd, std::vector<std::string> &argv)
+uint32_t pragma::string::get_command_args(const std::string &line, std::string &cmd, std::vector<std::string> &argv)
 {
 	argv = get_args(line);
 	if(argv.empty())
@@ -468,14 +468,14 @@ uint32_t ustring::get_command_args(const std::string &line, std::string &cmd, st
 	}
 	return argv.size();
 }
-std::vector<std::string> ustring::get_command_args(const std::string &line, std::string &cmd)
+std::vector<std::string> pragma::string::get_command_args(const std::string &line, std::string &cmd)
 {
 	std::vector<std::string> argv;
 	get_command_args(line, cmd, argv);
 	return argv;
 }
 
-void ustring::get_sequence_commands(const std::string &line, const std::function<void(std::string, std::vector<std::string> &)> &f)
+void pragma::string::get_sequence_commands(const std::string &line, const std::function<void(std::string, std::vector<std::string> &)> &f)
 {
 	std::string substr(line);
 	auto st = substr.find_first_not_of(WHITESPACE);
@@ -497,7 +497,7 @@ void ustring::get_sequence_commands(const std::string &line, const std::function
 		get_sequence_commands(next.c_str(), f);
 }
 
-std::string ustring::read_until(const std::string &t, char c)
+std::string pragma::string::read_until(const std::string &t, char c)
 {
 	std::string str;
 	unsigned int i = 0;
@@ -508,9 +508,9 @@ std::string ustring::read_until(const std::string &t, char c)
 	return str;
 }
 
-std::string ustring::read_until_etx(const std::string &t) { return read_until(t, 3); }
+std::string pragma::string::read_until_etx(const std::string &t) { return read_until(t, 3); }
 
-std::string ustring::fill_zeroes(const std::string &i, int numDigits)
+std::string pragma::string::fill_zeroes(const std::string &i, int numDigits)
 {
 	if(i.length() >= numDigits)
 		return i;
@@ -522,13 +522,13 @@ std::string ustring::fill_zeroes(const std::string &i, int numDigits)
 	return si.str();
 }
 
-void ustring::to_lower(std::string &str) { std::transform(str.begin(), str.end(), str.begin(), static_cast<int (*)(int)>(std::tolower)); }
-void ustring::to_upper(std::string &str) { std::transform(str.begin(), str.end(), str.begin(), static_cast<int (*)(int)>(std::toupper)); }
+void pragma::string::to_lower(std::string &str) { std::transform(str.begin(), str.end(), str.begin(), static_cast<int (*)(int)>(std::tolower)); }
+void pragma::string::to_upper(std::string &str) { std::transform(str.begin(), str.end(), str.begin(), static_cast<int (*)(int)>(std::toupper)); }
 
-bool ustring::get_key_value(const std::string &str, std::string &rkey, std::string &rval, const char *sep)
+bool pragma::string::get_key_value(const std::string &str, std::string &rkey, std::string &rval, const char *sep)
 {
 	std::vector<std::string> sub;
-	ustring::explode(str, sep, sub);
+	string::explode(str, sep, sub);
 	if(sub.size() < 2)
 		return false;
 	rkey = sub[0];
@@ -541,48 +541,48 @@ bool ustring::get_key_value(const std::string &str, std::string &rkey, std::stri
 	return true;
 }
 
-std::wstring ustring::string_to_wstring(const std::string &str)
+std::wstring pragma::string::string_to_wstring(const std::string &str)
 {
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 	return converter.from_bytes(str);
 }
-std::string ustring::wstring_to_string(const std::wstring &wstr)
+std::string pragma::string::wstring_to_string(const std::wstring &wstr)
 {
 	using convert_type = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_type, wchar_t> converter;
 	return converter.to_bytes(wstr);
 }
 
-void ustring::replace(std::string &str, const std::string &from, const std::string &to) { replace<std::string>(str, from, to); }
+void pragma::string::replace(std::string &str, const std::string &from, const std::string &to) { replace<std::string>(str, from, to); }
 
-std::string ustring::get_lower(const std::string &str)
+std::string pragma::string::get_lower(const std::string &str)
 {
 	auto out = str;
 	to_lower(out);
 	return out;
 }
-std::string ustring::get_upper(const std::string &str)
+std::string pragma::string::get_upper(const std::string &str)
 {
 	auto out = str;
 	to_upper(out);
 	return out;
 }
-int32_t ustring::to_int(const std::string &str) {
+int32_t pragma::string::to_int(const std::string &str) {
 	int32_t value = 0;
 	auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
 	return value;
 }
-float ustring::to_float(const std::string &str) {
+float pragma::string::to_float(const std::string &str) {
 	float value = 0.f;
 	auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
 	return value;
 }
-double ustring::to_double(const std::string &str) {
+double pragma::string::to_double(const std::string &str) {
 	double value = 0.0;
 	auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
 	return value;
 }
-std::string ustring::name_to_identifier(const std::string &name)
+std::string pragma::string::name_to_identifier(const std::string &name)
 {
 	auto r = name;
 	to_lower(r);
@@ -592,7 +592,7 @@ std::string ustring::name_to_identifier(const std::string &name)
 	}
 	return r;
 }
-std::string ustring::to_camel_case(const std::string &str)
+std::string pragma::string::to_camel_case(const std::string &str)
 {
 	std::string camelCase;
 	bool capitalizeNext = false;
@@ -613,7 +613,7 @@ std::string ustring::to_camel_case(const std::string &str)
 
 	return camelCase;
 }
-std::string ustring::to_snake_case(const std::string &str)
+std::string pragma::string::to_snake_case(const std::string &str)
 {
 	std::string snake_case;
 
@@ -633,8 +633,8 @@ std::string ustring::to_snake_case(const std::string &str)
 	return snake_case;
 }
 
-uint32_t ustring::ip_to_int(const std::string_view &ip) { return inet_addr(ip.data()); }
-std::string ustring::int_to_ip(uint32_t ip)
+uint32_t pragma::string::ip_to_int(const std::string_view &ip) { return inet_addr(ip.data()); }
+std::string pragma::string::int_to_ip(uint32_t ip)
 {
 	in_addr paddr;
 #ifdef _WIN32
@@ -645,7 +645,7 @@ std::string ustring::int_to_ip(uint32_t ip)
 	return inet_ntoa(paddr);
 }
 
-void ustring::truncate_string(std::string &str, std::size_t maxLength)
+void pragma::string::truncate_string(std::string &str, std::size_t maxLength)
 {
 	if(str.length() > maxLength)
 		str = str.substr(0, maxLength - 3) + "...";

@@ -14,7 +14,7 @@ module pragma.string;
 
 import :case_insensitive_hash;
 
-unsigned long ustring::CaseInsensitiveHashingFunc::operator()(const std::string &key) const
+unsigned long pragma::string::CaseInsensitiveHashingFunc::operator()(const std::string &key) const
 {
 	// djb2 hash
 	size_t hash = 5381;
@@ -41,7 +41,7 @@ unsigned long ustring::CaseInsensitiveHashingFunc::operator()(const std::string 
 #define STRICMP strcasecmp
 #endif
 
-bool ustring::CaseInsensitiveStringComparator::operator()(const std::string &lhs, const std::string &rhs) const
+bool pragma::string::CaseInsensitiveStringComparator::operator()(const std::string &lhs, const std::string &rhs) const
 {
 	return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin(), [](char a, char b) { return tolower(a) == tolower(b); });
 }
