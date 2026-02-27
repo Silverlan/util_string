@@ -9,7 +9,7 @@ module;
 
 export module pragma.string;
 
-export import :case_insensitive_hash;
+export import :string_map;
 export import std.compat;
 
 export {
@@ -81,9 +81,10 @@ export {
 		float to_float(const std::string &str);
 		double to_double(const std::string &str);
 		template<typename T>
-			T cstring_to_number(const char *str) {
+		T cstring_to_number(const char *str)
+		{
 			T value {};
-			auto [ptr, ec] = std::from_chars(str, str +strlen(str), value);
+			auto [ptr, ec] = std::from_chars(str, str + strlen(str), value);
 			return value;
 		}
 		void explode_whitespace(const std::string &str, std::vector<std::string> &substrings);
