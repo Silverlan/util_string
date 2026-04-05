@@ -260,7 +260,7 @@ double pragma::string::calc_levenshtein_similarity(const std::string_view &s1, c
 }
 
 // See https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Longest_common_substring#C.2B.2B_2
-std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1, std::size_t &startIdx2)
+std::size_t pragma::string::longest_common_substring(std::string_view str1, std::string_view str2, std::size_t &startIdx1, std::size_t &startIdx2)
 {
 	if(str1.empty() == true || str2.empty() == true)
 		return 0;
@@ -296,12 +296,12 @@ std::size_t pragma::string::longest_common_substring(const std::string &str1, co
 	return maxSubstr;
 }
 
-std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1)
+std::size_t pragma::string::longest_common_substring(std::string_view str1, std::string_view str2, std::size_t &startIdx1)
 {
 	std::size_t startIdx2 = 0;
 	return longest_common_substring(str1, str2, startIdx1, startIdx2);
 }
-std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2, std::string &subStr)
+std::size_t pragma::string::longest_common_substring(std::string_view str1, std::string_view str2, std::string &subStr)
 {
 	std::size_t startIdx1 = 0;
 	auto len = longest_common_substring(str1, str2, startIdx1);
@@ -312,7 +312,7 @@ std::size_t pragma::string::longest_common_substring(const std::string &str1, co
 	subStr = str1.substr(startIdx1, len);
 	return len;
 }
-std::size_t pragma::string::longest_common_substring(const std::string &str1, const std::string &str2)
+std::size_t pragma::string::longest_common_substring(std::string_view str1, std::string_view str2)
 {
 	std::size_t startIdx = 0;
 	return longest_common_substring(str1, str2, startIdx);

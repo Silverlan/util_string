@@ -90,10 +90,10 @@ export {
 		void explode_whitespace(const std::string &str, std::vector<std::string> &substrings);
 		uint32_t calc_levenshtein_distance(const std::string_view &s1, const std::string_view &s2);
 		double calc_levenshtein_similarity(const std::string_view &s1, const std::string_view &s2);
-		std::size_t longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1, std::size_t &startIdx2);
-		std::size_t longest_common_substring(const std::string &str1, const std::string &str2, std::size_t &startIdx1);
-		std::size_t longest_common_substring(const std::string &str1, const std::string &str2, std::string &subStr);
-		std::size_t longest_common_substring(const std::string &str1, const std::string &str2);
+		std::size_t longest_common_substring(std::string_view str1, std::string_view str2, std::size_t &startIdx1, std::size_t &startIdx2);
+		std::size_t longest_common_substring(std::string_view str1, std::string_view str2, std::size_t &startIdx1);
+		std::size_t longest_common_substring(std::string_view str1, std::string_view str2, std::string &subStr);
+		std::size_t longest_common_substring(std::string_view str1, std::string_view str2);
 		std::string substr(const std::string &str, std::size_t start, size_t len = std::string::npos);
 		std::string_view substr(const std::string_view &str, std::size_t start, size_t len = std::string::npos);
 		size_t find(const auto &strHaystack, const auto &strNeedle, bool caseSensitive = true);
