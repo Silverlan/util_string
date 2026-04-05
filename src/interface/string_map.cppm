@@ -32,6 +32,8 @@ export namespace pragma::string {
 	};
 	template<typename T>
 	using StringMap = std::unordered_map<std::string, T, string_hash, std::equal_to<>>;
+	template<typename T>
+	using OrderedStringMap = std::map<std::string, T, std::less<>>;
 	struct string_hash_ci {
 		using is_transparent = void;
 
