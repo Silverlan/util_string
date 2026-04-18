@@ -408,8 +408,19 @@ size_t pragma::string::find_first_of(FILE *f, const std::string &tofind, std::st
 	return NOT_FOUND;
 }
 
-std::string pragma::string::float_to_string(float f) { return std::to_string(f); }
-std::string pragma::string::int_to_string(int i) { return std::to_string(i); }
+template<typename T>
+	requires(std::is_arithmetic_v<T>)
+std::string to_string(T value)
+{
+	char buf[64];
+	auto [ptr, ec] = std::to_chars(buf, buf + sizeof(buf), value);
+	if(ec != std::errc {})
+		throw std::runtime_error("to_string conversion failed"); // Unreachable?
+	return std::string(buf, ptr);
+}
+
+std::string pragma::string::float_to_string(float f) { return to_string(f); }
+std::string pragma::string::int_to_string(int i) { return to_string(i); }
 
 bool pragma::string::is_integer(const std::string &str)
 {
